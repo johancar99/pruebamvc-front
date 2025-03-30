@@ -28,4 +28,8 @@ export class EmployeesCrudUseCase {
   async updateEmployeeAccess(id: number, access: boolean): Promise<void> {
     return this.employeesRepository.updateEmployeeAccess(id, access);
   }
+
+  async importEmployees(data: any[]): Promise<void> {
+    return this.employeesRepository.importEmployees(data);
+  }
 }

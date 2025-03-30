@@ -62,9 +62,18 @@
         <!-- Fila 2: Botón Agregar Empleado -->
         <div class="row mb-3">
           <div class="col-12 d-flex justify-content-end">
-            <button class="btn btn-success btn-sm" @click="openModal('create')">
+            <button class="btn btn-success btn-sm  me-1" @click="openModal('create')">
               Add Employee
             </button>
+            <label class="btn btn-secondary btn-sm mb-0">
+              Import File
+              <input
+                type="file"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                @change="handleFileUpload"
+                hidden
+              />
+            </label>
           </div>
         </div>
   
@@ -120,6 +129,9 @@
                     <button class="btn btn-danger btn-sm me-1" @click="deleteEmployee(employee.id)">
                       Delete
                     </button>
+                    <button class="btn btn-secondary btn-sm me-1" @click="generatePDF(employee)">
+                      PDF
+                    </button>
                     <button class="btn btn-secondary btn-sm" @click="openEntryModal(employee)">
                     Ingresos
                   </button>
@@ -156,6 +168,8 @@
   import { AlertService } from '../../../../shared/services/AlertService';
   import EmployeeModal from '../components/EmployeeModal.vue';
   import EmployeeEntryModal from '../components/EmployeeEntryModal.vue';
+  import { PdfService } from '../../../../shared/services/PdfService';
+  import Papa from 'papaparse';
 
   
   export default defineComponent({
@@ -166,7 +180,7 @@
       const searchQuery = ref('');
       const departmentFilter = ref('');
       const startDate = ref(''); 
-    const endDate = ref('');
+      const endDate = ref('');
   
       // Variables para el modal (crear/editar/ver)
       const showModal = ref(false);
@@ -278,6 +292,37 @@
       const closeEntryModal = () => {
         showEntryModal.value = false;
       };
+
+      const handleFileUpload = (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (!file) return;
+        Papa.parse(file, {
+          header: true,
+          complete: async (results: { data: any; }) => {
+            // results.data es un array de objetos, cada uno representando una fila del CSV
+            try {
+              // Asumimos que el endpoint de importación recibe un JSON con los datos importados
+              await employeesCrudUseCase.importEmployees(results.data);
+              AlertService.showSuccess('Employees imported successfully.');
+              await fetchEmployees();
+            } catch (error: any) {
+              console.error('Error importing employees:', error);
+              AlertService.showError(
+                error.response?.data?.message || 'Failed to import employees.'
+              );
+            }
+          },
+          error: (error: any) => {
+            console.error('Error reading file:', error);
+            AlertService.showError('Error reading file.');
+          }
+        });
+      };
+
+      const generatePDF = (employee: Employee) => {
+        PdfService.generateEmployeePDF(employee);
+      };
   
       onMounted(() => {
         fetchEmployees();
@@ -304,6 +349,8 @@
         selectedEmployeeForEntries,
         startDate,
         endDate,
+        handleFileUpload,
+        generatePDF
       };
     },
   });

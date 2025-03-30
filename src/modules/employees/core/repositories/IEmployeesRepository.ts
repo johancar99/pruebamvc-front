@@ -15,4 +15,5 @@ export interface IEmployeesRepository {
   updateEmployee(id: number, employeeData: Partial<Employee>): Promise<Employee>;
   deleteEmployee(id: number): Promise<void>;
   updateEmployeeAccess(id: number, access: boolean): Promise<void>;
+  importEmployees(data: any[]): Promise<void>;
 }

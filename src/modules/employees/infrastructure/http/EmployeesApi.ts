@@ -56,4 +56,9 @@ export class EmployeesApi implements IEmployeesRepository {
   async updateEmployeeAccess(id: number, access: boolean): Promise<void> {
     await this.apiClient.put(`/update-access/${id}`, { access });
   }
+
+  async importEmployees(data: any[]): Promise<void> {
+    console.log(data)
+    await this.apiClient.post('/employees/import', { data });
+  }
 }
