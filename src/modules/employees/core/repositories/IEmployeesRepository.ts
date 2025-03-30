@@ -16,4 +16,5 @@ export interface IEmployeesRepository {
   deleteEmployee(id: number): Promise<void>;
   updateEmployeeAccess(id: number, access: boolean): Promise<void>;
   importEmployees(data: any[]): Promise<void>;
+  entry(document: string): Promise<any>;
 }

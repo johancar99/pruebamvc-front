@@ -268,11 +268,10 @@
       };
   
       const toggleAccess = async (employee: Employee) => {
-        const newAccess = !employee.access;
         try {
-          await employeesCrudUseCase.updateEmployeeAccess(employee.id, newAccess);
+          await employeesCrudUseCase.updateEmployeeAccess(employee.id, employee.access);
           AlertService.showSuccess(
-            `Employee access has been ${newAccess ? 'granted' : 'revoked'} successfully.`
+            `Esatdo actualizado correctamente`
           );
           await fetchEmployees();
         } catch (error: any) {

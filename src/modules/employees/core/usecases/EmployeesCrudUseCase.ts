@@ -32,4 +32,9 @@ export class EmployeesCrudUseCase {
   async importEmployees(data: any[]): Promise<void> {
     return this.employeesRepository.importEmployees(data);
   }
+
+  async login(document: string): Promise<any> {
+    // Aquí se puede agregar lógica adicional si fuese necesario
+    return this.employeesRepository.entry(document);
+  }
 }

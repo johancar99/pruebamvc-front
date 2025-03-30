@@ -1,6 +1,7 @@
 // src/presentation/router/index.ts
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import Login from '../modules/users/presentation/pages/Login.vue';
+import LoginEmployee from '../modules/employees/presentation/pages/LoginEmployee.vue';
 import DashboardPage from '../modules/users/presentation/pages/Dashboard.vue'; // Vista placeholder
 import AdminLayout from '../presentation/AdminLayout.vue';
 import UsersList from '../modules/users/presentation/pages/UsersList.vue';
@@ -11,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/login-employee',
+    name: 'LoginEmployee',
+    component: LoginEmployee,
   },
   {
     path: '/',
