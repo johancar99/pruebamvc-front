@@ -271,7 +271,7 @@
         try {
           await employeesCrudUseCase.updateEmployeeAccess(employee.id, employee.access);
           AlertService.showSuccess(
-            `Esatdo actualizado correctamente`
+            `Estado actualizado correctamete`
           );
           await fetchEmployees();
         } catch (error: any) {
